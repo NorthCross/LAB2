@@ -20,7 +20,7 @@
 
 端口：8080
 
-### 数据库表（employees）结构
+#### 数据库表（employees）结构
 
 | 字段       | 类型        | 意义   |
 | ---------- | ----------- | ------ |
@@ -28,7 +28,7 @@
 | name       | varchar(20) | 用户名 |
 | department | varchar(20) | 部门   |
 
-### kafka消息
+#### kafka消息
 
 - 添加员工后发送消息(格式：{"id":"", "name":"", "depatment":""})到 **register**  Topic
 
@@ -51,7 +51,7 @@
 | passwd | varchar(20) | 密码     |
 | status | bool        | 是否激活 |
 
-### kafka 消息
+#### kafka 消息
 
 - 接收 **register** Topic 的注册消息，注册完后，发送消息格式(key:"init", value:{"id":"", "name":"", "depatment":""})到 **tasks** Topic
 
@@ -80,3 +80,9 @@
 #### kafka消息
 
 - 接收 **taks** Topic, 根据消息key值判断新增任务还是完成任务
+
+#### API
+
+| 功能         | 方式 | URL       |
+| ------------ | ---- | --------- |
+| 查看用户任务 | GET  | /tasks/id |
