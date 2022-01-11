@@ -45,6 +45,7 @@ app.post("/employees", function(req, res) {
 			return;
 		}
 		res.send({msg:"success"}).end()
+		console.log({msg:"add employee success"})
 		producer.send({ // 发送注册消息
 			topic: 'register',
 			messages:[
@@ -78,24 +79,26 @@ app.get("/employees/:id", function(req, res) {
 //Todo: 修改部门后是否发送消息
 app.put("/employees/:id", function(req, res) {
 	employee = req.body
-	connection.query('UPDATE employees SET department=? WHERE id=?', [employee.department, req.params.id], function (err,) {
+	connection.query('UPDATE employees SET department=? WHERE id=?', [employee.department, req.params.id], function (err,results) {
 		if (err) {
 			res.status(500).send({msg:"server internal error."}).end()
 			return
 		}
-		if(results.changedRows == 0)
+		if(results.changedRows == 0) {
             res.send({msg:"user does not exist or department does not change."}).end()
+			console.log({msg:"user does not exist or department does not change."})
+		}
         else {
 		    res.send({msg:"success"}).end()
-            // producer.send({ // 发送任务消息
-            //     topic: 'activate',
-            //     messages:[
-            //         {key:"activate",
-            //             value:req.params.id},
-            //     ]
-            // }).catch(e => console.error(`[example/producer] ${e.message}`, e))
+			console.log({msg:"modify department success"})
+            producer.send({ // 发送任务消息
+                topic: 'tasks',
+                messages:[
+                    {key:"modify",
+                        value:JSON.stringify({"id":req.params.id, "department":employee.department})},
+                ]
+            }).catch(e => console.error(`[example/producer] ${e.message}`, e))
         }
-		res.send({msg:"success"}).end()
 	})
 })
 
