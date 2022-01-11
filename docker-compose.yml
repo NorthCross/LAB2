@@ -19,7 +19,7 @@ services:
       - MYSQL_ROOT_PASSWORD=123456
     volumes:
       - "./employee/mysql/:/docker-entrypoint-initdb.d"
-      - employee-data:/var/lib/mysql
+      - "./employee/mysql/data:/var/lib/mysql"
   kafka:
     image: bitnami/kafka:latest
     container_name: kafka
@@ -59,7 +59,7 @@ services:
       - MYSQL_ROOT_PASSWORD=123456
     volumes:
       - "./user/mysql/:/docker-entrypoint-initdb.d"
-      - user-data:/var/lib/mysql
+      - "./user/mysql/data:/var/lib/mysql"
   task:
     build: ./task/app
     container_name: task
@@ -79,7 +79,7 @@ services:
       - MYSQL_ROOT_PASSWORD=123456
     volumes:
       - "./task/mysql/:/docker-entrypoint-initdb.d"
-      - task-data:/var/lib/mysql
+      - "./task/mysql/data:/var/lib/mysql"
 volumes:
   employee-data:
   user-data:
